@@ -5,3 +5,5 @@
 - C'est tout
 
 Vous pouvez rajouter &d=t à l'url pour afficher la vue par défaut, ou tout simplement désactiver le script.
+
+N'hesitez pas à me contacter en jeu pour que je rajoute votre avatar.
