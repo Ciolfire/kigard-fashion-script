@@ -24,7 +24,7 @@ for (let row of table) {
 				imgSrc = cellContent.children[0].src;
 				console.log(name);
 				if (created.includes(name)) {
-					customImg =  "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/"+name+".gif";
+					customImg =  "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/img/"+name+".gif";
 					cellContent.children[0].src = customImg;
 				}
 			}
