@@ -1,4 +1,4 @@
-  "Abeline", "Acirion", "Agaz", "Ahnubis", "Akfar", "Akhille", "Akurion", "Alari", "Alhena", "Althea", "Alyan", "Amfortas", "Anskygard", "Archibald", "Arkann", "Artellia", "Arthas", "Asha", "Asumbrax", "Aurea", "Azel Cagus", "Azerwhite", "Azharh", "Azuka", 
+["Abeline", "Acirion", "Agaz", "Ahnubis", "Akfar", "Akhille", "Akurion", "Alari", "Alhena", "Althea", "Alyan", "Amfortas", "Anskygard", "Archibald", "Arkann", "Artellia", "Arthas", "Asha", "Asumbrax", "Aurea", "Azel Cagus", "Azerwhite", "Azharh", "Azuka", 
   "Bayork", "Ber83", "Bermazh", "Berthus", "Berurier", "Bignedulf", "Bobernocle", "Bolofort Poignefer", "Boubasilou", "Brechnar", "Bryn", 
   "Calamondin", "Calavera", "Calyso", "Chimay", "Chouwy", "Chut", "Cigue", "Ciol", "Coccolitho", "Cornelir", "Couic", "Crapuscule", "Cri Rauque", "Crorbak", "Cryo", "Crystalis Telmor", "Cys", 
   "Daktirak", "Dana", "Darktoto", "Darktotor51", "Deario", "Delfy", "Delphine Talaron", "Diemar", "Divodurum", "Djack", "Dragnarr", "Drakan", "Dromokar", "Du Serpentaire", "Duagloth", 
@@ -22,4 +22,4 @@
   "Whitedwarf", "Wismer", "Wurmmf", "Wushhhhhhh", 
   "Xam", "Xarcan", 
   "Yasuro", "Yehon", "Ylahad", "Ysalia", "Ysdilia", 
-  "Zetincelle", "Ziegfreud", "Zora"
+  "Zetincelle", "Ziegfreud", "Zora"]
