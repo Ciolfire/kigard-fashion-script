@@ -14,7 +14,6 @@ req.overrideMimeType("text/plain");
 req.addEventListener("load", function() {
 // Do something with req.responseText
   created = JSON.parse(req.responseText);
-  console.log(created);
   applyFashion();
 }, false);
 req.addEventListener("error", function() {
