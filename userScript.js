@@ -10,7 +10,10 @@
 var created = [
 	"Ciol",
 	"Krong",
-	"Iracema"
+	"Iracema",
+	"Ozz",
+	"Saneth",
+	"Asha",
 ];
 var vue = document.getElementsByTagName("tbody")[0];
 var table = vue.children;
