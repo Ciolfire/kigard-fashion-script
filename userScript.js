@@ -34,7 +34,6 @@ function applyFashion() {
 					if(cellContent.innerHTML.includes("images/vue/pj/") && !cellContent.innerHTML.includes("cheval" )) {
 						name = cellContent.children[1].getElementsByClassName("titre")[0].innerText;
 						imgSrc = cellContent.children[0].src;
-						console.log(name);
 						if (created.includes(name)) {
 							customImg =  "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/char/"+name+".gif";
 							cellContent.children[0].src = customImg;
