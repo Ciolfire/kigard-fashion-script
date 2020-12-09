@@ -7,14 +7,6 @@
 // @exclude  https://www.kigard.fr/index.php?p=vue*&d=t
 // ==/UserScript==
 
-var created = [
-	"Ciol",
-	"Krong",
-	"Iracema",
-	"Ozz",
-	"Saneth",
-	"Asha",
-];
 var vue = document.getElementsByTagName("tbody")[0];
 var table = vue.children;
 
