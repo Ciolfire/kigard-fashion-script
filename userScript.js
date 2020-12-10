@@ -12,33 +12,47 @@ var created = [];
 req.open("GET", "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/list.json");
 req.overrideMimeType("text/plain");
 req.addEventListener("load", function() {
-// Do something with req.responseText
-  created = JSON.parse(req.responseText);
+  customList = JSON.parse(req.responseText);
+  // console.log(created);
   applyFashion();
 }, false);
 req.addEventListener("error", function() {
-// Handle error
+// Handle error	
+  // console.log("Error while loading char list");
 }, false);
+
 req.send();
 
 
 function applyFashion() {
   var vue = document.getElementsByTagName("tbody")[0];
-  var table = vue.children;
+  var view = vue.children;
   
-  for (let row of table) {
+  for (let row of view) {
 		for (let cell of row.children) {
+      // We only check the cell we can see, it's useless to check anything else
 			if (!cell.style.backgroundImage.includes("brouillard") && !cell.className.includes("coord")) {
-					cellContent = cell.children[0];
-					if(cellContent.innerHTML.includes("images/vue/pj/") && !cellContent.innerHTML.includes("cheval" )) {
-						name = cellContent.children[1].getElementsByClassName("titre")[0].innerText;
-						imgSrc = cellContent.children[0].src;
-						if (created.includes(name)) {
-							customImg =  "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/char/"+name+".gif";
+				// We get what is inside the cell	
+        cellContent = cell.children[0];
+        // If it's a character...
+				if (cellContent.innerHTML.includes("images/vue/pj/")) {
+          // we get its name and...
+          name = cellContent.children[1].getElementsByClassName("titre")[0].innerText;
+          // ... if it has a custom icon then...
+          if (customList.includes(name)) {
+            //... if he is mounted we show the horse riding icon
+            if (cellContent.innerHTML.includes("cheval" )) {
+              // ... But not for now
+              // customImg =  "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/horse/"+name+".gif";
+              // cellContent.children[0].src = customImg;
+            } else {
+              // we show the custom icon
+              customImg =  "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/char/"+name+".gif";
 							cellContent.children[0].src = customImg;
-						}
-					}
-			}
-		}	
-	}
+            }
+          }
+        }
+      }
+    }
+  }
 }
