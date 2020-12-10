@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name     Kigard Fashion Script
 // @author   Ciol
-// @version  1.0.0
+// @version  1.0.2
 // @grant    none
 // @include  https://www.kigard.fr/index.php?p=vue*
 // @exclude  https://www.kigard.fr/index.php?p=vue*&d=t
