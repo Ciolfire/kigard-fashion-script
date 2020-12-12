@@ -42,9 +42,9 @@ function applyFashion() {
           let name = cellContent.children[1].getElementsByClassName("titre")[0].innerText;
           // ... if it has a custom icon then...
           if (customList.includes(name)) {
-              let customImg = name+".gif";
+              let customImg = name + ".gif";
             //... if he is mounted we show the horse riding icon
-              if (cellContent.innerHTML.includes("cheval" )) {
+              if (cellContent.innerHTML.includes("cheval")) {
               customImg = "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/horse/" + customImg;
               cellContent.children[0].src = customImg;
             } else {
