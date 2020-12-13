@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name     Kigard Fashion Script
 // @author   Ciol
-// @version  1.0.3
+// @version  1.0.4
 // @grant    none
 // @include  https://www.kigard.fr/index.php?p=vue*
 // @exclude  https://www.kigard.fr/index.php?p=vue*&d=t
@@ -43,21 +43,18 @@ function applyFashion() {
           // ... if it has a custom icon then...
           if (customList.includes(name)) {
               let customImg = name + ".gif";
-            //... if he is mounted we show the horse riding icon
-              if (cellContent.innerHTML.includes("cheval")) {
-              customImg = "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/horse/" + customImg;
-              cellContent.children[0].src = customImg;
-            } else {
-              // we show the custom icon
-              if (hour >= 7 && hour <= 18) {
-                // day icon
-                customImg = "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/char/" + customImg;
-              } else {
-                // night icon
-                customImg = "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/night/" + customImg;
-              }
-              cellContent.children[0].src = customImg;
+            //... if he is mounted we add the horse path
+            if (cellContent.innerHTML.includes("cheval")) {
+              customImg = "horse/" + customImg;
             }
+            if (hour >= 7 && hour <= 18) {
+              // day icon
+              customImg = "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/day/" + customImg;
+            } else {
+              // night icon
+              customImg = "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/night/" + customImg;
+            }
+            cellContent.children[0].src = customImg;
           }
         }
       }
