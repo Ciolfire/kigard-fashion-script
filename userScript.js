@@ -1,9 +1,12 @@
 // ==UserScript==
 // @name     Kigard Fashion Script
-// @author   Ciol
-// @version  1.0.4
+// @author   Ciol <ciolfire@gmail.com>
+// @contributor Saneth
+// @contributor Menolly
+// @version  1.0.5
+// @updateURL https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/userScript.js
 // @grant    none
-// @include  https://www.kigard.fr/index.php?p=vue*
+// @include  https://www.kigard.fr/*
 // @exclude  https://www.kigard.fr/index.php?p=vue*&d=t
 // ==/UserScript==
 
@@ -14,7 +17,11 @@ req.overrideMimeType("text/plain");
 req.addEventListener("load", function() {
   customList = JSON.parse(req.responseText);
   // console.log(created);
-  applyFashion();
+  if (document.getElementById('page_profil_public') != null) {
+    fashionList();
+  } else {
+    applyFashion();
+  }
 }, false);
 req.addEventListener("error", function() {
 // Handle error
@@ -61,3 +68,36 @@ function applyFashion() {
     }
   }
 }
+
+function fashionList() {
+  /* -- BEGIN : Applique les skins sur la liste des personnages -----*/
+  //Récupère la liste des PJ
+  let xpath = '//*[@id="historique"]/tbody/tr[*]/td[1]';
+  let lines = document.evaluate(xpath, document.documentElement, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+
+  for (var i=0;i < lines.snapshotLength;i++) {
+    let line = lines.snapshotItem(i);
+    let PJ = line.textContent.trim();
+    if (customList.includes(PJ)) {
+      let customImg = encodeURI( "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/day/" + PJ + ".gif") ;
+      let img = document.evaluate('.//img', line , null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue ;
+      img.src= customImg;
+    }
+  }
+  /* -- END   : Applique les skins sur la liste des personnages -----*/
+}
+
+
+//window.addEventListener("click", applyFash);
+const targetNode = document.getElementsByTagName('body')[0];
+const config = { attributes: true, childList: false, subtree: false };
+
+var observer = new MutationObserver(function(mutations, observer) {
+    // fired when a mutation occurs
+    console.log(mutations, observer);
+    fashionList();
+});
+
+// define what element should be observed by the observer
+// and what types of mutations trigger the callback
+observer.observe(targetNode, config);
