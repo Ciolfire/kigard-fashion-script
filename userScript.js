@@ -3,8 +3,8 @@
 // @author   Ciol <ciolfire@gmail.com>
 // @contributor Saneth
 // @contributor Menolly
-// @version  1.0.5
-// @updateURL https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/kigard.fashion.user.js
+// @version  1.0.6
+// @downloadURL https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/kigard.fashion.user.js
 // @grant    none
 // @include  https://www.kigard.fr/*
 // @exclude  https://www.kigard.fr/index.php?p=vue*&d=t
@@ -94,7 +94,7 @@ const config = { attributes: true, childList: false, subtree: false };
 
 var observer = new MutationObserver(function(mutations, observer) {
     // fired when a mutation occurs
-    console.log(mutations, observer);
+    //console.log(mutations, observer);
     fashionList();
 });
 
