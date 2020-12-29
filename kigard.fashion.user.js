@@ -3,7 +3,7 @@
 // @author   Ciol <ciolfire@gmail.com>
 // @contributor Saneth
 // @contributor Menolly
-// @version  1.0.7
+// @version  1.0.8
 // @grant    none
 // @include  https://www.kigard.fr/*
 // @exclude  https://www.kigard.fr/index.php?p=vue*&d=t
@@ -60,6 +60,7 @@ function applyFashion() {
               // night icon
               customImg = "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/night/" + customImg;
             }
+            cellContent.children[0].setAttribute("dataImage", cellContent.children[0].src);
             cellContent.children[0].src = customImg;
           }
         }
