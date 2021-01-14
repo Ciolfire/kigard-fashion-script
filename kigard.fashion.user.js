@@ -1,13 +1,13 @@
 // ==UserScript==
-// @name     Kigard Fashion Script
-// @author   Ciol <ciolfire@gmail.com>
+// @name Kigard Fashion Script
+// @author Ciol <ciolfire@gmail.com>
 // @contributor Saneth
 // @contributor Menolly
 // @description Un script permettant la personnalisation des icones de personnage sur Kigard.fr.
-// @version  2
-// @grant    none
-// @include  https://www.kigard.fr/*
-// @exclude  https://www.kigard.fr/index.php?p=vue*&d=t
+// @version 3
+// @grant none
+// @include https://www.kigard.fr/*
+// @exclude https://www.kigard.fr/index.php?p=vue*&d=t
 // ==/UserScript==
 
 var req = new XMLHttpRequest();
