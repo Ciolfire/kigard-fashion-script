@@ -4,7 +4,7 @@
 // @contributor Saneth
 // @contributor Menolly
 // @description Un script permettant la personnalisation des icones de personnage sur Kigard.fr.
-// @version  1.1.10
+// @version  2
 // @grant    none
 // @include  https://www.kigard.fr/*
 // @exclude  https://www.kigard.fr/index.php?p=vue*&d=t
