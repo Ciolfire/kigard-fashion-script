@@ -4,7 +4,7 @@
 // @contributor Saneth
 // @contributor Menolly
 // @description Un script permettant la personnalisation des icones de personnage sur Kigard.fr.
-// @version 7
+// @version 8
 // @icon icon.png
 // @grant none
 // @include https://www.kigard.fr/*
@@ -20,8 +20,10 @@ req.addEventListener("load", function() {
   console.log("created");
   if (document.getElementById('page_profil_public') != null) {
     fashionList();
-  } else if (document.getElementsByTagName("h3")[0].innerHTML.includes("Membres de votre clan")) {
-    fashionClanList();
+  } else if (document.getElementsByTagName("h3")[0].innerHTML.includes("Membres")) {
+    fashionClanList(false);
+  } else if (document.getElementById('page_profil_public') != null && document.getElementsByTagName("h3")[1].innerHTML.includes("Membres de votre clan")) {
+    fashionClanList(true);
   } else {
     applyFashion();
   }
@@ -91,7 +93,25 @@ function fashionList() {
   /* -- END   : Applique les skins sur la liste des personnages -----*/
 }
 
-function fashionClanList() {
+function fashionClan() {
+  /* -- BEGIN : Applique les skins sur la liste des personnages -----*/
+  //Récupère la liste des PJ
+  let xpath = '//*[@id="page_profil_public"]/table/tbody/tr[*]/td[1]';
+  let lines = document.evaluate(xpath, document.documentElement, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+
+  for (var i=0;i < lines.snapshotLength;i++) {
+    let line = lines.snapshotItem(i);
+    let PJ = line.textContent.trim();
+    if (customList.includes(PJ)) {
+      let customImg = encodeURI( "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/day/" + PJ + ".gif") ;
+      let img = document.evaluate('.//img', line , null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue ;
+      img.src= customImg;
+    }
+  }
+  /* -- END   : Applique les skins sur la liste des personnages -----*/
+}
+
+function fashionClanList($ownClan) {
   /* -- BEGIN : Applique les skins sur la liste du clan -----*/
   let date = new Date();
   let hour = date.getHours();
@@ -99,7 +119,7 @@ function fashionClanList() {
   var lines = document.getElementsByTagName("td");
 
   for (let line of lines) {
-    if (line.getAttribute("data-title") == "Nom") {
+    if (($ownClan && line.getAttribute("data-title") == "Nom") || $ownClan && line.children[0].className == "pj_clan") {
       let name = line.children[1].innerHTML;
       let img = line.children[0];
       // ... if it has a custom icon then...
@@ -133,6 +153,7 @@ var observer = new MutationObserver(function(mutations, observer) {
     // fired when a mutation occurs
     //console.log(mutations, observer);
     fashionList();
+    fashionClan();
 });
 
 // define what element should be observed by the observer
