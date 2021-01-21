@@ -4,7 +4,7 @@
 // @contributor Saneth
 // @contributor Menolly
 // @description Un script permettant la personnalisation des icones de personnage sur Kigard.fr.
-// @version 6
+// @version 7
 // @icon icon.png
 // @grant none
 // @include https://www.kigard.fr/*
@@ -17,9 +17,11 @@ req.open("GET", "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-scrip
 req.overrideMimeType("text/plain");
 req.addEventListener("load", function() {
   customList = JSON.parse(req.responseText);
-  // console.log(created);
+  console.log("created");
   if (document.getElementById('page_profil_public') != null) {
     fashionList();
+  } else if (document.getElementsByTagName("h3")[0].innerHTML.includes("Membres de votre clan")) {
+    fashionClanList();
   } else {
     applyFashion();
   }
@@ -87,6 +89,39 @@ function fashionList() {
     }
   }
   /* -- END   : Applique les skins sur la liste des personnages -----*/
+}
+
+function fashionClanList() {
+  /* -- BEGIN : Applique les skins sur la liste du clan -----*/
+  let date = new Date();
+  let hour = date.getHours();
+  //Récupère la liste des PJ
+  var lines = document.getElementsByTagName("td");
+
+  for (let line of lines) {
+    if (line.getAttribute("data-title") == "Nom") {
+      let name = line.children[1].innerHTML;
+      let img = line.children[0];
+      // ... if it has a custom icon then...
+      if (customList.includes(name)) {
+        let customImg = name + ".gif";
+        //... if he is mounted we add the horse path
+        if (img.src.includes("cheval")) {
+                customImg = "horse/" + customImg;
+              }
+              if (hour >= 7 && hour <= 18) {
+                // day icon
+                customImg = "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/day/" + customImg;
+              } else {
+                // night icon
+                customImg = "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/night/" + customImg;
+              }
+              img.setAttribute("dataImage", img.src);
+              img.src = customImg;
+      }
+    }
+  }
+  /* -- END   : Applique les skins sur la liste du clan -----*/
 }
 
 
