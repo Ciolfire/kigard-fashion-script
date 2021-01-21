@@ -4,7 +4,7 @@
 // @contributor Saneth
 // @contributor Menolly
 // @description Un script permettant la personnalisation des icones de personnage sur Kigard.fr.
-// @version 8
+// @version 9
 // @icon icon.png
 // @grant none
 // @include https://www.kigard.fr/*
@@ -13,17 +13,23 @@
 
 var req = new XMLHttpRequest();
 var customList = [];
+var date = new Date();
+var hour = date.getHours();
+
 req.open("GET", "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/list.json");
 req.overrideMimeType("text/plain");
 req.addEventListener("load", function() {
   customList = JSON.parse(req.responseText);
   console.log("created");
-  if (document.getElementById('page_profil_public') != null) {
-    fashionList();
-  } else if (document.getElementsByTagName("h3")[0].innerHTML.includes("Membres")) {
-    fashionClanList(false);
-  } else if (document.getElementById('page_profil_public') != null && document.getElementsByTagName("h3")[1].innerHTML.includes("Membres de votre clan")) {
-    fashionClanList(true);
+  if (document.getElementsByTagName("h3")[0].innerHTML.includes("Membres de votre clan")) {
+    fashionOwnClan();
+  } else if (document.getElementById('page_profil_public') != null) {
+    if (document.getElementsByTagName("h3")[1].innerHTML.includes("Membres")) {
+      console.log("test");
+      fashionClan();
+    } else {
+      fashionList();
+    }
   } else {
     applyFashion();
   }
@@ -39,8 +45,6 @@ req.send();
 function applyFashion() {
   var vue = document.getElementsByTagName("tbody")[0];
   var view = vue.children;
-  let date = new Date();
-  let hour = date.getHours();
 
   for (let row of view) {
     for (let cell of row.children) {
@@ -59,6 +63,7 @@ function applyFashion() {
             if (cellContent.innerHTML.includes("cheval")) {
               customImg = "horse/" + customImg;
             }
+            console.log(hour);
             if (hour >= 7 && hour <= 18) {
               // day icon
               customImg = "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/day/" + customImg;
@@ -85,7 +90,12 @@ function fashionList() {
     let line = lines.snapshotItem(i);
     let PJ = line.textContent.trim();
     if (customList.includes(PJ)) {
-      let customImg = encodeURI( "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/day/" + PJ + ".gif") ;
+      let customImg = null;
+      if (hour >= 7 && hour <= 18) {
+        customImg = encodeURI( "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/day/" + PJ + ".gif") ;
+      } else {
+        customImg = encodeURI( "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/night/" + PJ + ".gif") ;
+      }
       let img = document.evaluate('.//img', line , null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue ;
       img.src= customImg;
     }
@@ -103,7 +113,12 @@ function fashionClan() {
     let line = lines.snapshotItem(i);
     let PJ = line.textContent.trim();
     if (customList.includes(PJ)) {
-      let customImg = encodeURI( "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/day/" + PJ + ".gif") ;
+      let customImg = null;
+      if (hour >= 7 && hour <= 18) {
+        customImg = encodeURI( "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/day/" + PJ + ".gif") ;
+      } else {
+        customImg = encodeURI( "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/night/" + PJ + ".gif") ;
+      }
       let img = document.evaluate('.//img', line , null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue ;
       img.src= customImg;
     }
@@ -111,41 +126,38 @@ function fashionClan() {
   /* -- END   : Applique les skins sur la liste des personnages -----*/
 }
 
-function fashionClanList($ownClan) {
+function fashionOwnClan() {
   /* -- BEGIN : Applique les skins sur la liste du clan -----*/
-  let date = new Date();
-  let hour = date.getHours();
   //Récupère la liste des PJ
   var lines = document.getElementsByTagName("td");
 
   for (let line of lines) {
-    if (($ownClan && line.getAttribute("data-title") == "Nom") || $ownClan && line.children[0].className == "pj_clan") {
+    if (line.getAttribute("data-title") == "Nom") {
       let name = line.children[1].innerHTML;
       let img = line.children[0];
       // ... if it has a custom icon then...
       if (customList.includes(name)) {
+            console.log(hour);
         let customImg = name + ".gif";
         //... if he is mounted we add the horse path
         if (img.src.includes("cheval")) {
-                customImg = "horse/" + customImg;
-              }
-              if (hour >= 7 && hour <= 18) {
-                // day icon
-                customImg = "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/day/" + customImg;
-              } else {
-                // night icon
-                customImg = "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/night/" + customImg;
-              }
-              img.setAttribute("dataImage", img.src);
-              img.src = customImg;
+          customImg = "horse/" + customImg;
+        }
+        if (hour >= 7 && hour <= 18) {
+          // day icon
+          customImg = "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/day/" + customImg;
+        } else {
+          // night icon
+          customImg = "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/night/" + customImg;
+        }
+        img.setAttribute("dataImage", img.src);
+        img.src = customImg;
       }
     }
   }
   /* -- END   : Applique les skins sur la liste du clan -----*/
 }
 
-
-//window.addEventListener("click", applyFash);
 const targetNode = document.getElementsByTagName('body')[0];
 const config = { attributes: true, childList: false, subtree: false };
 
