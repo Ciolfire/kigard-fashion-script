@@ -4,7 +4,7 @@
 // @contributor Saneth
 // @contributor Menolly
 // @description Un script permettant la personnalisation des icones de personnage sur Kigard.fr.
-// @version 9
+// @version 10
 // @icon icon.png
 // @grant none
 // @include https://www.kigard.fr/*
@@ -25,7 +25,6 @@ req.addEventListener("load", function() {
     fashionOwnClan();
   } else if (document.getElementById('page_profil_public') != null) {
     if (document.getElementsByTagName("h3")[1].innerHTML.includes("Membres")) {
-      console.log("test");
       fashionClan();
     } else {
       fashionList();
@@ -63,7 +62,6 @@ function applyFashion() {
             if (cellContent.innerHTML.includes("cheval")) {
               customImg = "horse/" + customImg;
             }
-            console.log(hour);
             if (hour >= 7 && hour <= 18) {
               // day icon
               customImg = "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/day/" + customImg;
@@ -137,7 +135,6 @@ function fashionOwnClan() {
       let img = line.children[0];
       // ... if it has a custom icon then...
       if (customList.includes(name)) {
-            console.log(hour);
         let customImg = name + ".gif";
         //... if he is mounted we add the horse path
         if (img.src.includes("cheval")) {
@@ -152,6 +149,31 @@ function fashionOwnClan() {
         }
         img.setAttribute("dataImage", img.src);
         img.src = customImg;
+      }
+    } else if (line.getAttribute("data-title") == "Empathie") {
+      let empathies = line.children[0].children;
+      for (let empathie of empathies) {
+        if (empathie.title != "" && empathie.href.includes("pj")) {
+          let name = empathie.title;
+          let img  = empathie.children[0];
+          
+          if (customList.includes(name)) {
+            let customImg = name + ".gif";
+            //... if he is mounted we add the horse path
+            if (img.src.includes("cheval")) {
+              customImg = "horse/" + customImg;
+            }
+            if (hour >= 7 && hour <= 18) {
+              // day icon
+              customImg = "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/day/" + customImg;
+            } else {
+              // night icon
+              customImg = "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/night/" + customImg;
+            }
+            img.setAttribute("dataImage", img.src);
+            img.src = customImg;
+          }
+        }
       }
     }
   }
