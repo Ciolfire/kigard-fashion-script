@@ -21,15 +21,17 @@ req.overrideMimeType("text/plain");
 req.addEventListener("load", function() {
   customList = JSON.parse(req.responseText);
   console.log("created");
-  if (document.getElementsByTagName("h3")[0].innerHTML.includes("Membres de votre clan")) {
+  if (document.getElementsByTagName("h3")[0].innerHTML.includes("Liste des personnages")) {
+    console.log("list");
+    fashionList();
+  } else if (document.getElementsByTagName("h3")[0].innerHTML.includes("Membres de votre clan")) {
+    console.log("propre clan");
     fashionOwnClan();
-  } else if (document.getElementById('page_profil_public') != null) {
-    if (document.getElementsByTagName("h3")[1].innerHTML.includes("Membres")) {
-      fashionClan();
-    } else {
-      fashionList();
-    }
-  } else {
+  } else if (document.getElementsByTagName("h3")[1].innerHTML.includes("Membres")) {
+    console.log("clan");
+    fashionClan();
+  }
+  else {
     applyFashion();
   }
 }, false);
