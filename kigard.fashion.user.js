@@ -4,7 +4,7 @@
 // @contributor Saneth
 // @contributor Menolly
 // @description Un script permettant la personnalisation des icones de personnage sur Kigard.fr.
-// @version 10
+// @version 11
 // @icon icon.png
 // @grant none
 // @include https://www.kigard.fr/*
@@ -113,14 +113,22 @@ function fashionClan() {
     let line = lines.snapshotItem(i);
     let PJ = line.textContent.trim();
     if (customList.includes(PJ)) {
+      console.log(line);
       let customImg = null;
+      let customHorseImg = null;
       if (hour >= 7 && hour <= 18) {
-        customImg = encodeURI( "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/day/" + PJ + ".gif") ;
+        customImg = encodeURI( "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/day/" + PJ + ".gif");
+        customHorseImg = encodeURI( "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/day/horse/" + PJ + ".gif");
       } else {
-        customImg = encodeURI( "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/night/" + PJ + ".gif") ;
+        customImg = encodeURI( "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/night/" + PJ + ".gif");
+        customHorseImg = encodeURI( "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/night/horse/" + PJ + ".gif");
       }
-      let img = document.evaluate('.//img', line , null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue ;
-      img.src= customImg;
+      let img = document.evaluate('.//img', line , null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+      if (img.src.includes("cheval")) {
+        img.src= customHorseImg;
+      } else {
+        img.src= customImg;
+      }
     }
   }
   /* -- END   : Applique les skins sur la liste des personnages -----*/
