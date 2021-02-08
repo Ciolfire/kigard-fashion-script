@@ -4,7 +4,7 @@
 // @contributor Saneth
 // @contributor Menolly
 // @description Un script permettant la personnalisation des icones de personnage sur Kigard.fr.
-// @version 11
+// @version 10
 // @icon icon.png
 // @grant none
 // @include https://www.kigard.fr/*
@@ -27,11 +27,11 @@ req.addEventListener("load", function() {
   } else if (document.getElementsByTagName("h3")[0].innerHTML.includes("Membres de votre clan")) {
     console.log("propre clan");
     fashionOwnClan();
-  } else if (document.getElementsByTagName("h3")[1].innerHTML.includes("Membres")) {
+  } else if ((document.getElementsByTagName("h3")[1]) && document.getElementsByTagName("h3")[1].innerHTML.includes("Membres")) {
     console.log("clan");
     fashionClan();
-  }
-  else {
+  } else {
+    console.log("default");
     applyFashion();
   }
 }, false);
@@ -113,22 +113,14 @@ function fashionClan() {
     let line = lines.snapshotItem(i);
     let PJ = line.textContent.trim();
     if (customList.includes(PJ)) {
-      console.log(line);
       let customImg = null;
-      let customHorseImg = null;
       if (hour >= 7 && hour <= 18) {
-        customImg = encodeURI( "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/day/" + PJ + ".gif");
-        customHorseImg = encodeURI( "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/day/horse/" + PJ + ".gif");
+        customImg = encodeURI( "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/day/" + PJ + ".gif") ;
       } else {
-        customImg = encodeURI( "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/night/" + PJ + ".gif");
-        customHorseImg = encodeURI( "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/night/horse/" + PJ + ".gif");
+        customImg = encodeURI( "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/night/" + PJ + ".gif") ;
       }
-      let img = document.evaluate('.//img', line , null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
-      if (img.src.includes("cheval")) {
-        img.src= customHorseImg;
-      } else {
-        img.src= customImg;
-      }
+      let img = document.evaluate('.//img', line , null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue ;
+      img.src= customImg;
     }
   }
   /* -- END   : Applique les skins sur la liste des personnages -----*/
