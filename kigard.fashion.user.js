@@ -4,7 +4,7 @@
 // @contributor Saneth
 // @contributor Menolly
 // @description Un script permettant la personnalisation des icones de personnage sur Kigard.fr.
-// @version 12
+// @version 13
 // @icon icon.png
 // @grant none
 // @include https://www.kigard.fr/*
@@ -13,7 +13,7 @@
 
 
 var nightMode = false;
-//nightMode = true;
+nightMode = true;
 // ============= Activer ou désactiver le mode nuit ===============
 // == Pour l'activer, retirer les // en début de ligne au dessus ==
 // == L'inverse pour le désactiver, exemple:                     ==
@@ -163,9 +163,9 @@ function fashionClan() {
       let customPath = null;
       let horse = "";
       if (isNight()) {
-        customPath = "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/day/";
-      } else {
         customPath = "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/night/";
+      } else {
+        customPath = "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/day/";
       }
       let img = document.evaluate('.//img', line , null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue ;
       if (img.src.includes("cheval")) {
