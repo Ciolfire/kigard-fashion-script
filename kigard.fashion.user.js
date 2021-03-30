@@ -4,7 +4,7 @@
 // @contributor Saneth
 // @contributor Menolly
 // @description Un script permettant la personnalisation des icones de personnage sur Kigard.fr.
-// @version 14
+// @version 15
 // @icon icon.png
 // @grant none
 // @include https://tournoi.kigard.fr/*
@@ -208,8 +208,8 @@ function fashionOwnClan() {
       for (let empathie of empathies) {
         if (empathie.title != "" && empathie.href.includes("pj")) {
           let name = empathie.title;
-          let img  = empathie.children[0];
-          
+          let img = empathie.children[0];
+
           if (customList.includes(name)) {
             let customImg = name + ".gif";
             //... if he is mounted we add the horse path
