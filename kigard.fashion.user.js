@@ -4,7 +4,7 @@
 // @contributor Saneth
 // @contributor Menolly
 // @description Un script permettant la personnalisation des icones de personnage sur Kigard.fr.
-// @version 15
+// @version 16
 // @icon icon.png
 // @grant none
 // @include https://tournoi.kigard.fr/*
@@ -21,16 +21,27 @@ nightMode = true;
 // ================================================================
 
 
-var req = new XMLHttpRequest();
+var charReq = new XMLHttpRequest();
+var horseReq = new XMLHttpRequest();
 var customList = [];
+var horseList = [];
 var date = new Date();
 var hour = date.getHours();
 
-req.open("GET", "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/list.json");
-req.overrideMimeType("text/plain");
-req.addEventListener("load", function() {
-  customList = JSON.parse(req.responseText);
-  //console.log("created");
+horseReq.open("GET", "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/list.json");
+horseReq.overrideMimeType("text/plain");
+horseReq.onload = function() {
+  horseList = JSON.parse(horseReq.responseText);
+}
+
+horseReq.send();
+
+charReq.open("GET", "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/list.json");
+charReq.overrideMimeType("text/plain");
+charReq.onload = function() {
+  customList = JSON.parse(charReq.responseText);
+  console.log(customList);
+  console.log(horseList);
   if (document.getElementsByTagName("h3")[0].innerHTML.includes("Liste des personnages")) {
     console.log("list");
     fashionList();
@@ -47,13 +58,9 @@ req.addEventListener("load", function() {
     console.log("default");
     applyFashion();
   }
-}, false);
-req.addEventListener("error", function() {
-// Handle error
-  // console.log("Error while loading char list");
-}, false);
+};
 
-req.send();
+charReq.send();
 
 function isNight() {
   if (hour >= 7 && hour <= 18) {
@@ -102,30 +109,63 @@ function applyFashion() {
         let cellContent = cell.children[0];
         // If it's a character...
         if (cellContent.innerHTML.includes("images/vue/pj/")) {
-          // we get its name and...
-          let name = cellContent.children[1].getElementsByClassName("titre")[0].innerText;
-          // ... if it has a custom icon then...
-          if (customList.includes(name)) {
-              let customImg = name + ".gif";
-            //... if he is mounted we add the horse path
-            if (cellContent.innerHTML.includes("cheval")) {
-              customImg = "horse/" + customImg;
-            }
-            if (isNight()) {
-              // night icon
-              customImg = "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/night/" + customImg;
-            } else {
-              // day icon
-              customImg = "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/day/" + customImg;
-            }
-            cellContent.children[0].setAttribute("dataImage", cellContent.children[0].src);
-            cellContent.children[0].src = customImg;
-          }
+          fashionCharacter(cellContent);
+        } else if (cellContent.innerHTML.includes("images/vue/monstre/17.gif")) {
+          fashionHorse(cellContent);
         }
       }
     }
   }
 }
+
+function fashionCharacter(cell) {
+  // we get its name and...
+  let name = cell.children[1].getElementsByClassName("titre")[0].innerText;
+  // ... if it has a custom icon then...
+  if (customList.includes(name)) {
+    let customImg = name + ".gif";
+    //... if he is mounted we add the horse path
+    if (cell.innerHTML.includes("cheval")) {
+      customImg = "horse/" + customImg;
+    }
+    if (isNight()) {
+      // night icon
+      customImg = "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/night/" + customImg;
+    } else {
+      // day icon
+      customImg = "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/day/" + customImg;
+    }
+    let img = cell.firstElementChild;
+    img.setAttribute("dataImage", img.src);
+    img.src = customImg;
+    img.onerror = (e) => {
+      if (img.getAttribute("dataImage") != null) {
+        img.src = img.getAttribute("dataImage");
+        img.setAttribute("dataImage", null);
+      }
+    }
+  }
+}
+
+function fashionHorse(cell) {
+  let owner = cell.lastElementChild.getElementsByTagName("small")[0].innerHTML;
+  owner = owner.slice(1, owner.length-1);
+
+  if (horseList.includes(owner)) {
+    let img = cell.firstElementChild;
+    img.setAttribute("dataImage", img.src);
+    img.src = "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/horse/"+owner+".gif";
+    img.onerror = (e) => {
+      if (img.getAttribute("dataImage") != null) {
+        img.src = img.getAttribute("dataImage");
+        img.setAttribute("dataImage", null);
+      }
+    }
+  } else {
+    console.log(owner + " not in the list.");
+  }
+}
+
 
 function fashionList() {
   /* -- BEGIN : Applique les skins sur la liste des personnages -----*/
