@@ -28,7 +28,7 @@ var horseList = [];
 var date = new Date();
 var hour = date.getHours();
 
-horseReq.open("GET", "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/list.json");
+horseReq.open("GET", "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/list.horse.json");
 horseReq.overrideMimeType("text/plain");
 horseReq.onload = function() {
   horseList = JSON.parse(horseReq.responseText);
