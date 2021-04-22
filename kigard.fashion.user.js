@@ -4,7 +4,7 @@
 // @contributor Saneth
 // @contributor Menolly
 // @description Un script permettant la personnalisation des icones de personnage sur Kigard.fr.
-// @version 16
+// @version 17
 // @icon icon.png
 // @grant none
 // @include https://tournoi.kigard.fr/*
@@ -120,7 +120,7 @@ function applyFashion() {
 
 function fashionCharacter(cell) {
   // we get its name and...
-  let name = cell.children[1].getElementsByClassName("titre")[0].innerText;
+  let name = cell.children[1].getElementsByClassName("titre")[0].innerText.trim();
   // ... if it has a custom icon then...
   if (customList.includes(name)) {
     let customImg = name + ".gif";
