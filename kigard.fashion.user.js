@@ -4,7 +4,7 @@
 // @contributor Saneth
 // @contributor Menolly
 // @description Un script permettant la personnalisation des icones de personnage sur Kigard.fr.
-// @version 17
+// @version 18
 // @icon icon.png
 // @grant none
 // @include https://tournoi.kigard.fr/*
@@ -148,21 +148,24 @@ function fashionCharacter(cell) {
 }
 
 function fashionHorse(cell) {
-  let owner = cell.lastElementChild.getElementsByTagName("small")[0].innerHTML;
-  owner = owner.slice(1, owner.length-1);
-
-  if (horseList.includes(owner)) {
-    let img = cell.firstElementChild;
-    img.setAttribute("dataImage", img.src);
-    img.src = "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/horse/"+owner+".gif";
-    img.onerror = (e) => {
-      if (img.getAttribute("dataImage") != null) {
-        img.src = img.getAttribute("dataImage");
-        img.setAttribute("dataImage", null);
+  let owner = cell.lastElementChild.getElementsByTagName("small");
+  // We check if the horse has an owner
+  if (owner.length) {
+    // if so, we get the name and check if he has a custom horse
+    owner = owner[0].innerHTML.slice(1, owner.length-1);
+    if (horseList.includes(owner)) {
+      let img = cell.firstElementChild;
+      img.setAttribute("dataImage", img.src);
+      img.src = "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/horse/"+owner+".gif";
+      img.onerror = (e) => {
+        if (img.getAttribute("dataImage") != null) {
+          img.src = img.getAttribute("dataImage");
+          img.setAttribute("dataImage", null);
+        }
       }
+    } else {
+      //console.log(owner + " not in the list.");
     }
-  } else {
-    console.log(owner + " not in the list.");
   }
 }
 
