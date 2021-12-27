@@ -95,6 +95,9 @@ function fashionLinks() {
 
 function applyFashion() {
   var vue = document.getElementsByTagName("tbody")[0];
+  if (vue === undefined) {
+    return null;
+  }
   var view = vue.children;
 
   for (let row of view) {
