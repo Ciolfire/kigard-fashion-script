@@ -4,7 +4,7 @@
 // @contributor Saneth
 // @contributor Menolly
 // @description Un script permettant la personnalisation des icones de personnage sur Kigard.fr.
-// @version 18
+// @version 19
 // @icon icon.png
 // @grant none
 // @include https://tournoi.kigard.fr/*
