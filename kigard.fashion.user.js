@@ -4,7 +4,7 @@
 // @contributor Saneth
 // @contributor Menolly
 // @description Un script permettant la personnalisation des icones de personnage sur Kigard.fr.
-// @version 19
+// @version 20
 // @icon icon.png
 // @grant none
 // @include https://tournoi.kigard.fr/*
@@ -27,6 +27,10 @@ var customList = [];
 var horseList = [];
 var date = new Date();
 var hour = date.getHours();
+var period = "day";
+if (isNight()) {
+  period = "night";
+}
 
 horseReq.open("GET", "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/list.horse.json");
 horseReq.overrideMimeType("text/plain");
@@ -40,22 +44,25 @@ charReq.open("GET", "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-s
 charReq.overrideMimeType("text/plain");
 charReq.onload = function() {
   customList = JSON.parse(charReq.responseText);
-  console.log(customList);
-  console.log(horseList);
+  // console.log(customList);
+  // console.log(horseList);
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  const page = urlParams.get('p')
   if (document.getElementsByTagName("h3")[0].innerHTML.includes("Liste des personnages")) {
-    console.log("list");
+    //console.log("list");
     fashionList();
-  } else if (document.getElementsByTagName("h3")[0].innerHTML.includes("Membres de votre clan")) {
-    console.log("propre clan");
+  } else if (page == "clan" && urlParams.get('g') == "membres") {
+    //console.log("propre clan");
     fashionOwnClan();
   } else if ((document.getElementsByTagName("h3")[1]) && document.getElementsByTagName("h3")[1].innerHTML.includes("Membres")) {
-    console.log("clan");
+    //console.log("clan");
     fashionClan();
   } else if (document.getElementById("page_profil_public")) {
-    console.log("profile");
+    //console.log("profile");
     fashionLinks();
   } else {
-    console.log("default");
+    //console.log("default");
     applyFashion();
   }
 };
@@ -76,18 +83,12 @@ function fashionLinks() {
   for (let link of links) {
     var name = link.nextElementSibling.innerText.split("avec ")[1];
     if (customList.includes(name)) {
-      let customImg = name + ".gif";
+      let customImg = `${name}.gif`;
       //... if he is mounted we add the horse path
       if (link.src.includes("cheval")) {
-        customImg = "horse/" + customImg;
+        customImg = `horse/${customImg}`;
       }
-      if (isNight()) {
-        // night icon
-        customImg = "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/night/" + customImg;
-      } else {
-        // day icon
-        customImg = "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/day/" + customImg;
-      }
+      customImg = `https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/${period}/${customImg}`;
       link.src = customImg;
     }
   }
@@ -96,7 +97,7 @@ function fashionLinks() {
 function applyFashion() {
   var vue = document.getElementsByTagName("tbody")[0];
   if (vue === undefined) {
-    return null;
+    return;
   }
   var view = vue.children;
 
@@ -126,18 +127,12 @@ function fashionCharacter(cell) {
   let name = cell.children[1].getElementsByClassName("titre")[0].innerText.trim();
   // ... if it has a custom icon then...
   if (customList.includes(name)) {
-    let customImg = name + ".gif";
+    let customImg = `${name}.gif`;
     //... if he is mounted we add the horse path
     if (cell.innerHTML.includes("cheval")) {
-      customImg = "horse/" + customImg;
+      customImg = `horse/${customImg}`;
     }
-    if (isNight()) {
-      // night icon
-      customImg = "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/night/" + customImg;
-    } else {
-      // day icon
-      customImg = "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/day/" + customImg;
-    }
+    customImg = `https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/${period}/${customImg}`;
     let img = cell.firstElementChild;
     img.setAttribute("dataImage", img.src);
     img.src = customImg;
@@ -155,11 +150,12 @@ function fashionHorse(cell) {
   // We check if the horse has an owner
   if (owner.length) {
     // if so, we get the name and check if he has a custom horse
-    owner = owner[0].innerHTML.slice(1, owner.length-1);
-    if (horseList.includes(owner)) {
+    let name = owner[0].innerText;
+    name = name.slice(1, name.length-1);
+    if (horseList.includes(name)) {
       let img = cell.firstElementChild;
       img.setAttribute("dataImage", img.src);
-      img.src = "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/horse/"+owner+".gif";
+      img.src = `https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/horse/${name}.gif`;
       img.onerror = (e) => {
         if (img.getAttribute("dataImage") != null) {
           img.src = img.getAttribute("dataImage");
@@ -183,12 +179,7 @@ function fashionList() {
     let line = lines.snapshotItem(i);
     let PJ = line.textContent.trim();
     if (customList.includes(PJ)) {
-      let customImg = null;
-      if (isNight()) {
-        customImg = encodeURI( "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/night/" + PJ + ".gif");
-      } else {
-        customImg = encodeURI( "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/day/" + PJ + ".gif");
-      }
+      let customImg = encodeURI(`https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/${period}/${PJ}.gif`);
       let img = document.evaluate('.//img', line , null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
       img.src= customImg;
     }
@@ -208,16 +199,11 @@ function fashionClan() {
     if (customList.includes(PJ)) {
       let customPath = null;
       let horse = "";
-      if (isNight()) {
-        customPath = "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/night/";
-      } else {
-        customPath = "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/day/";
-      }
       let img = document.evaluate('.//img', line , null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue ;
       if (img.src.includes("cheval")) {
         horse = "horse/";
       }
-      img.src= encodeURI(customPath + horse + PJ + ".gif");
+      img.src= encodeURI(`https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/${period}/${horse}${PJ}.gif`);
     }
   }
   /* -- END   : Applique les skins sur la liste des personnages -----*/
@@ -226,12 +212,18 @@ function fashionClan() {
 function fashionOwnClan() {
   /* -- BEGIN : Applique les skins sur la liste du clan -----*/
   //Récupère la liste des PJ
-  var lines = document.getElementsByTagName("td");
-
+  let lines = document.getElementsByTagName("td");
   for (let line of lines) {
-    if (line.getAttribute("data-title") == "Nom") {
-      let name = line.children[1].innerHTML;
-      let img = line.children[0];
+    let name = "";
+    let img = "";
+    if (line.getAttribute("data-title") == "Nom" || line.getAttribute("colspan") == 3) {
+      if (line.getAttribute("colspan") == 3) {
+        name = line.children[1].innerText;
+        img = line.children[0];
+      } else {
+        name = line.children[0].children[1].innerText;
+        img = line.children[0].children[0].children[0];
+      }
       // ... if it has a custom icon then...
       if (customList.includes(name)) {
         let customImg = name + ".gif";
@@ -239,13 +231,7 @@ function fashionOwnClan() {
         if (img.src.includes("cheval")) {
           customImg = "horse/" + customImg;
         }
-        if (isNight()) {
-          // night icon
-          customImg = "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/night/" + customImg;
-        } else {
-          // day icon
-          customImg = "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/day/" + customImg;
-        }
+        customImg = `https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/${period}/${customImg}`;
         img.setAttribute("dataImage", img.src);
         img.src = customImg;
       }
@@ -257,18 +243,12 @@ function fashionOwnClan() {
           let img = empathie.children[0];
 
           if (customList.includes(name)) {
-            let customImg = name + ".gif";
+            let customImg = `${name}.gif`;
             //... if he is mounted we add the horse path
             if (img.src.includes("cheval")) {
-              customImg = "horse/" + customImg;
+              customImg = `horse/${customImg}`;
             }
-            if (isNight()) {
-              // night icon
-              customImg = "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/night/" + customImg;
-            } else {
-              // day icon
-              customImg = "https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/day/" + customImg;
-            }
+            customImg = `https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/${period}/${customImg}`;
             img.setAttribute("dataImage", img.src);
             img.src = customImg;
           }
