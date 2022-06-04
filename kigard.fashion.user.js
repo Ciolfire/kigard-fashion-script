@@ -7,18 +7,19 @@
 // @version 20
 // @icon icon.png
 // @grant none
-// @include https://tournoi.kigard.fr/*
+// @match https://tournoi.kigard.fr/*
 // @exclude https://tournoi.kigard.fr/index.php?p=vue*&d=t
 // ==/UserScript==
 
 
-var nightMode = false;
-nightMode = true;
-// ============= Activer ou désactiver le mode nuit ===============
-// == Pour l'activer, retirer les // en début de ligne au dessus ==
-// == L'inverse pour le désactiver, exemple:                     ==
-// == "//nightMode = true;" devient  "nightMode = true;"         ==
-// ================================================================
+var nightMode = true;
+
+//nightMode = false;
+// ============= Activer ou désactiver le mode nuit ===================
+// == Pour le désactiver, retirer les // en début de ligne au dessus ==
+// == L'inverse pour le réactiver, exemple:                          ==
+// == "//nightMode = false;" devient  "nightMode = false;"           ==
+// ====================================================================
 
 
 var charReq = new XMLHttpRequest();
@@ -124,7 +125,7 @@ function applyFashion() {
 
 function fashionCharacter(cell) {
   // we get its name and...
-  let name = cell.children[1].getElementsByClassName("titre")[0].innerText.trim();
+  let name = cell.querySelector(".titre").innerText.trim();
   // ... if it has a custom icon then...
   if (customList.includes(name)) {
     let customImg = `${name}.gif`;
