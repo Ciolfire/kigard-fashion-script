@@ -4,7 +4,7 @@
 // @contributor Saneth
 // @contributor Menolly
 // @description Un script permettant la personnalisation des icones de personnage sur Kigard.fr.
-// @version 20
+// @version 22
 // @icon icon.png
 // @grant none
 // @match https://tournoi.kigard.fr/*
@@ -13,13 +13,12 @@
 
 
 var nightMode = true;
-
 //nightMode = false;
-// ============= Activer ou désactiver le mode nuit ===================
-// == Pour le désactiver, retirer les // en début de ligne au dessus ==
-// == L'inverse pour le réactiver, exemple:                          ==
-// == "//nightMode = false;" devient  "nightMode = false;"           ==
-// ====================================================================
+// ============= Activer ou désactiver le mode nuit ===============
+// == Pour l'activer, retirer les // en début de ligne au dessus ==
+// == L'inverse pour le désactiver, exemple:                     ==
+// == "//nightMode = true;" devient  "nightMode = true;"         ==
+// ================================================================
 
 
 var charReq = new XMLHttpRequest();
@@ -104,9 +103,15 @@ function applyFashion() {
 
   for (let row of view) {
     for (let cell of row.children) {
-      if (cell.children[0] && nightMode && isNight()) {
-        cell.children[0].children[0].style.backgroundColor = "#122f4091";
-        cell.children[0].children[0].onmouseout = function() {this.style.background="";this.style.backgroundColor = "#122f4091";}
+      let cellStack = cell.children[0];
+      if (cellStack && nightMode && isNight()) {
+        console.log(cellStack.children[0]);
+        let cellType = cellStack.children[0];
+        cellStack.children[1].style.backgroundColor = "#122f4091";
+        if (!cellType.classList.contains("brouillard")) {
+          cellStack.children[0].style.backgroundColor = "#122f4091";
+          cellType.onmouseout = function() {this.style.background="";this.style.backgroundColor = "#122f4091";}
+        }
       }
       // We only check the cell we can see, it's useless to check anything else
       if (!cell.style.backgroundImage.includes("brouillard") && !cell.className.includes("coord")) {
