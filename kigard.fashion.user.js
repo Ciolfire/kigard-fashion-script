@@ -4,7 +4,7 @@
 // @contributor Saneth
 // @contributor Menolly
 // @description Un script permettant la personnalisation des icones de personnage sur Kigard.fr.
-// @version 22
+// @version 23
 // @icon icon.png
 // @grant none
 // @match https://tournoi.kigard.fr/*
@@ -12,13 +12,15 @@
 // ==/UserScript==
 
 
-var nightMode = true;
+var nightMode = 1; // sombre
 
-//nightMode = false;
+// nightMode = 2; // semi-sombre
+// nightMode = 3; // peu sombre
+// nightMode = 0; // off
 // ============= Activer ou désactiver le mode nuit ===================
 // == Pour le désactiver, retirer les // en début de ligne au dessus ==
 // == L'inverse pour le réactiver, exemple:                          ==
-// == "//nightMode = false;" devient  "nightMode = false;"           ==
+// == "//nightMode = 0;" devient  "nightMode = 0;"           ==
 // ====================================================================
 
 
@@ -105,13 +107,24 @@ function applyFashion() {
   for (let row of view) {
     for (let cell of row.children) {
       let cellStack = cell.children[0];
-      if (cellStack && nightMode && isNight()) {
-        console.log(cellStack.children[0]);
+      if (cellStack && nightMode > 0 && isNight()) {
+        let nightColor= "#122f4070";
+        switch (nightMode) {
+          case 2:
+            nightColor = "#122f4050";
+            break;
+          case 3:
+            nightColor = "#122f4030";
+            break;
+        }
         let cellType = cellStack.children[0];
-        cellStack.children[1].style.backgroundColor = "#122f4091";
+        cellStack.children[1].style.backgroundColor = nightColor;
         if (!cellType.classList.contains("brouillard")) {
-          cellStack.children[0].style.backgroundColor = "#122f4091";
-          cellType.onmouseout = function() {this.style.background="";this.style.backgroundColor = "#122f4091";}
+          cellStack.children[0].style.backgroundColor = nightColor;
+          cellType.onmouseout = function() {
+            this.style.background="";
+            this.style.backgroundColor = nightColor;
+          }
         }
       }
       // We only check the cell we can see, it's useless to check anything else
