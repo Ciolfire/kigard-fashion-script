@@ -13,12 +13,13 @@
 
 
 var nightMode = true;
+
 //nightMode = false;
-// ============= Activer ou désactiver le mode nuit ===============
-// == Pour l'activer, retirer les // en début de ligne au dessus ==
-// == L'inverse pour le désactiver, exemple:                     ==
-// == "//nightMode = true;" devient  "nightMode = true;"         ==
-// ================================================================
+// ============= Activer ou désactiver le mode nuit ===================
+// == Pour le désactiver, retirer les // en début de ligne au dessus ==
+// == L'inverse pour le réactiver, exemple:                          ==
+// == "//nightMode = false;" devient  "nightMode = false;"           ==
+// ====================================================================
 
 
 var charReq = new XMLHttpRequest();
