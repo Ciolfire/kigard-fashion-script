@@ -15,7 +15,7 @@
 // == Pour le désactiver, mettre à 0, pour l'activer, mettre à 1     ==
 // ==       Exemple: "var zoom = 1;" ou "var zoom = 2;"              ==
 // ====================================================================
-var zoom = 1;
+var zoom = 0;
 // ============= Activer ou désactiver le mode nuit ===================
 // ==     Pour le désactiver, mettre à zero la ligne après ce bloc   ==
 // ==         Il existe plusieurs niveaux d'obscurité:               ==
