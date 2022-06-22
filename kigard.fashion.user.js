@@ -4,24 +4,35 @@
 // @contributor Saneth
 // @contributor Menolly
 // @description Un script permettant la personnalisation des icones de personnage sur Kigard.fr.
-// @version 23
+// @version 24
 // @icon icon.png
-// @grant none
+// @grant GM_addStyle
 // @match https://tournoi.kigard.fr/*
 // @exclude https://tournoi.kigard.fr/index.php?p=vue*&d=t
 // ==/UserScript==
 
-
-var nightMode = 1; // sombre
-
-// nightMode = 2; // semi-sombre
-// nightMode = 3; // peu sombre
-// nightMode = 0; // off
-// ============= Activer ou désactiver le mode nuit ===================
-// == Pour le désactiver, retirer les // en début de ligne au dessus ==
-// == L'inverse pour le réactiver, exemple:                          ==
-// == "//nightMode = 0;" devient  "nightMode = 0;"           ==
+// ============= Activer ou désactiver le zoom ========================
+// == Pour le désactiver, mettre à 0, pour l'activer, mettre à 1     ==
+// ==       Exemple: "var zoom = 1;" ou "var zoom = 2;"              ==
 // ====================================================================
+var zoom = 1;
+// ============= Activer ou désactiver le mode nuit ===================
+// ==     Pour le désactiver, mettre à zero la ligne après ce bloc   ==
+// ==         Il existe plusieurs niveaux d'obscurité:               ==
+// == 1: Nuit (100%) | 2: Crépuscule (50%) | 3: Soirée (25%)| 0: off ==
+// ====================================================================
+var nightMode = 2;
+
+if (zoom) {
+  GM_addStyle(`
+  @media (min-width: 600px) {
+    div.vue { width: 490px;height: 490px;float: none; flex-shrink: 0; }
+    div.bloc-vue div.vue-wrap div.description_vue {position: relative;left: auto;bottom: auto;width: auto;flex-grow: 1;}
+    div.vue-wrap {display: flex;flex-direction: row;flex-wrap: wrap;justify-content: center;}
+    table.vue {transform: scale(150%);transform-origin: top left;}
+  }
+  `);
+}
 
 
 var charReq = new XMLHttpRequest();
@@ -256,7 +267,7 @@ function fashionOwnClan() {
         img.src = customImg;
       }
     } else if (line.getAttribute("data-title") == "Empathie") {
-      let empathies = line.children[0].children;
+      let empathies = line.children;
       for (let empathie of empathies) {
         if (empathie.title != "" && empathie.href.includes("pj")) {
           let name = empathie.title;
