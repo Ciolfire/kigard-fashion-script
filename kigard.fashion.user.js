@@ -15,7 +15,7 @@
 // == Pour le désactiver, mettre à 0, pour l'activer, mettre à 1     ==
 // ==       Exemple: "var zoom = 1;" ou "var zoom = 2;"              ==
 // ====================================================================
-var zoom = 0;
+var zoom = 1;
 // ============= Activer ou désactiver le mode nuit ===================
 // ==     Pour le désactiver, mettre à zero la ligne après ce bloc   ==
 // ==         Il existe plusieurs niveaux d'obscurité:               ==
@@ -95,15 +95,17 @@ function isNight() {
 function fashionLinks() {
   let links = document.getElementsByClassName("pj_clan");
   for (let link of links) {
-    var name = link.nextElementSibling.innerText.split("avec ")[1];
-    if (customList.includes(name)) {
-      let customImg = `${name}.gif`;
-      //... if he is mounted we add the horse path
-      if (link.src.includes("cheval")) {
-        customImg = `horse/${customImg}`;
+    if (link.nextElementsSibling) {
+      var name = link.nextElementSibling.innerText.split("avec ")[1];
+      if (customList.includes(name)) {
+        let customImg = `${name}.gif`;
+        //... if he is mounted we add the horse path
+        if (link.src.includes("cheval")) {
+          customImg = `horse/${customImg}`;
+        }
+        customImg = `https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/${period}/${customImg}`;
+        link.src = customImg;
       }
-      customImg = `https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/${period}/${customImg}`;
-      link.src = customImg;
     }
   }
 }
