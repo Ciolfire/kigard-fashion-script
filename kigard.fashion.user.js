@@ -4,7 +4,7 @@
 // @contributor Saneth
 // @contributor Menolly
 // @description Un script permettant la personnalisation des icones de personnage sur Kigard.fr.
-// @version 24
+// @version 25
 // @icon icon.png
 // @grant GM_addStyle
 // @match https://tournoi.kigard.fr/*
@@ -12,8 +12,9 @@
 // ==/UserScript==
 
 // ============= Activer ou désactiver le zoom ========================
-// == Pour le désactiver, mettre à 0, pour l'activer, mettre à 1     ==
-// ==       Exemple: "var zoom = 1;" ou "var zoom = 2;"              ==
+// ==     Pour le désactiver, mettre à zero la ligne après ce bloc   ==
+// ==     Sinon, mettre une valeur supérieur à 1 (1.2, 1.5, 2,...    ==
+// ==      Exemple: "var zoom = 1.5;" ou "var zoom = 2;"             ==
 // ====================================================================
 var zoom = 0;
 // ============= Activer ou désactiver le mode nuit ===================
@@ -23,17 +24,31 @@ var zoom = 0;
 // ====================================================================
 var nightMode = 2;
 
-if (zoom) {
+if (typeof GM_addStyle == 'undefined') {
+  this.GM_addStyle = (aCss) => {
+    'use strict';
+    let head = document.getElementsByTagName('head')[0];
+    if (head) {
+      let style = document.createElement('style');
+      style.setAttribute('type', 'text/css');
+      style.textContent = aCss;
+      head.appendChild(style);
+      return style;
+    }
+    return null;
+  };
+}
+
+if (zoom > 1) {
   GM_addStyle(`
   @media (min-width: 600px) {
-    div.vue { width: 490px;height: 490px;float: none; flex-shrink: 0; }
+    div.vue { width: ${330 * zoom -5}px;height: ${330 * zoom -5}px;float: none; flex-shrink: 0; }
     div.bloc-vue div.vue-wrap div.description_vue {position: relative;left: auto;bottom: auto;width: auto;flex-grow: 1;}
     div.vue-wrap {display: flex;flex-direction: row;flex-wrap: wrap;justify-content: center;}
-    table.vue {transform: scale(150%);transform-origin: top left;}
+    table.vue {transform: scale(${100 * zoom}%);transform-origin: top left;image-rendering: pixelated;}
   }
   `);
 }
-
 
 var charReq = new XMLHttpRequest();
 var horseReq = new XMLHttpRequest();
