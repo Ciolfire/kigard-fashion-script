@@ -4,7 +4,7 @@
 // @contributor Saneth
 // @contributor Menolly
 // @description Un script permettant la personnalisation des icones de personnage sur Kigard.fr.
-// @version 25
+// @version 26
 // @icon icon.png
 // @grant GM_addStyle
 // @match https://tournoi.kigard.fr/*
@@ -17,6 +17,11 @@
 // ==      Exemple: "var zoom = 1.5;" ou "var zoom = 2;"             ==
 // ====================================================================
 var zoom = 0;
+// ============= Activer ou désactiver les pastilles ==================
+// ==     Pour le désactiver, mettre à zero la ligne après ce bloc   ==
+// ==     Sinon, mettre 1                                            ==
+// ====================================================================
+var showIdentifier = 1;
 // ============= Activer ou désactiver le mode nuit ===================
 // ==     Pour le désactiver, mettre à zero la ligne après ce bloc   ==
 // ==         Il existe plusieurs niveaux d'obscurité:               ==
@@ -189,6 +194,24 @@ function fashionCharacter(cell) {
         img.src = img.getAttribute("dataImage");
         img.setAttribute("dataImage", null);
       }
+    }
+  } else {
+    if (showIdentifier) {
+      let identifier = document.createElement('div');
+
+      identifier.innerHTML = name.charAt(0);
+      identifier.style.zIndex = 2;
+      identifier.style.width = '8px';
+      identifier.style.height = '8px';
+      identifier.style.textAlign = 'center';
+      identifier.style.position = 'absolute';
+      identifier.style.fontSize = '0.5em';
+      identifier.style.background = '#ffb300';
+      identifier.style.borderRadius = '0.25em';
+      identifier.style.bottom = '-18px';
+      identifier.style.pointerEvents = 'none';
+      identifier.style.border = '0.1em solid black';
+      cell.appendChild(identifier);
     }
   }
 }
