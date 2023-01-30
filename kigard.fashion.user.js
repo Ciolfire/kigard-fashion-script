@@ -4,8 +4,7 @@
 // @contributor Saneth
 // @contributor Menolly
 // @description Un script permettant la personnalisation des icones de personnage sur Kigard.fr.
-// @version 26
-// @icon icon.png
+// @version 27
 // @grant GM_addStyle
 // @match https://tournoi.kigard.fr/*
 // @exclude https://tournoi.kigard.fr/index.php?p=vue*&d=t
@@ -16,18 +15,91 @@
 // ==     Sinon, mettre une valeur supérieur à 1 (1.2, 1.5, 2,...    ==
 // ==      Exemple: "var zoom = 1.5;" ou "var zoom = 2;"             ==
 // ====================================================================
-var zoom = 0;
+var zoom = 1;
 // ============= Activer ou désactiver les pastilles ==================
 // ==     Pour le désactiver, mettre à zero la ligne après ce bloc   ==
-// ==     Sinon, mettre 1                                            ==
+// == 1: afficher pour personnages sans icone 2: Affichage pour tous ==
 // ====================================================================
-var showIdentifier = 1;
+var battleMode = 2;
 // ============= Activer ou désactiver le mode nuit ===================
 // ==     Pour le désactiver, mettre à zero la ligne après ce bloc   ==
 // ==         Il existe plusieurs niveaux d'obscurité:               ==
 // == 1: Nuit (100%) | 2: Crépuscule (50%) | 3: Soirée (25%)| 0: off ==
 // ====================================================================
 var nightMode = 2;
+
+var clansBack = {
+  "[SPA]": '#7dedffc7',
+  "[SVG]": '#4D5A56C7',
+  "[LDO]": '#a2a2a2c7',
+  "[FDD]": 'rgba(255, 255, 255, 0.78)',
+  "[VPN]": '#47b930cc',
+  "[ASS]": '#4D5A56C7',
+  "[LCC]": '#551112C7',
+  "[ORI]": '#9E0E40C7',
+  "[EOT]": '#4D5A56C7',
+  "[LBD]": '#4D5A56C7',
+  "[RAP]": 'rgba(79, 187, 39, 0.68)',
+  "[LOL]": '#3134ffc7',
+  "[LPO]": 'rgba(255, 109, 212, 0.67)',
+  "[RFO]": '#ffb300c7',
+  "[PDG]": 'rgba(255, 0, 167, 0.75)',
+  "[SDA]": 'rgba(38, 110, 132, 0.78)',
+  "[LSC]": '#ffb300c7',
+  "[ADB]": '#a2a2a2c7',
+  "[FEU]": '#ffb300c7',
+  "[MCG]": '#a2a2a2c7',
+  "[CCS]": 'rgba(0, 0, 0, 0.76)',
+  "[LBK]": '#4D5A56C7',
+  "[MAG]": '#ffb300c7',
+  "[CSI]": 'rgba(128, 130, 62, 0.83)',
+  "[NOX]": '#ffb300c7',
+  "[CBD]": '#ffb300c7',
+  "[CNC]": '#ffb300c7',
+  "[TAR]": '#ffb300c7',
+  "[DLR]": '#a2a2a2c7',
+  "[SAI]": '#4D5A56C7',
+  "[CDC]": '#ffb300c7',
+  "[CER]": '#ffb300c7',
+  "[BIB]": '#ffb300c7',
+}
+
+var clansColor = {
+  "[SPA]": '#ef32db',
+  "[SVG]": 'white',
+  "[LDO]": 'rgb(28, 0, 162)',
+  "[FDD]": 'rgb(30, 105, 128)',
+  "[VPN]": 'white',
+  "[ASS]": 'white',
+  "[LCC]": 'white',
+  "[ORI]": '#FFE436',
+  "[EOT]": 'black',
+  "[LBD]": '#f49773',
+  "[RAP]": 'black',
+  "[LOL]": '#ffef00',
+  "[LPO]": 'black',
+  "[RFO]": 'black',
+  "[PDG]": 'black',
+  "[SDA]": 'gold',
+  "[LSC]": 'black',
+  "[ADB]": 'rgba(137, 250, 255)',
+  "[FEU]": 'black',
+  "[MCG]": '#a20000',
+  "[CCS]": 'rgb(255, 108, 0)',
+  "[LBK]": '#ff6000',
+  "[MAG]": 'black',
+  "[CSI]": 'black',
+  "[NOX]": 'black',
+  "[CBD]": 'black',
+  "[CNC]": 'black',
+  "[TAR]": 'black',
+  "[DLR]": '#d20000',
+  "[SAI]": 'pink',
+  "[CDC]": 'black',
+  "[CER]": 'black',
+  "[BIB]": 'black',
+}
+
 
 if (typeof GM_addStyle == 'undefined') {
   this.GM_addStyle = (aCss) => {
@@ -195,24 +267,41 @@ function fashionCharacter(cell) {
         img.setAttribute("dataImage", null);
       }
     }
-  } else {
-    if (showIdentifier) {
-      let identifier = document.createElement('div');
+  }
+  if (battleMode == 2 || !customList.includes(name) && battleMode == 1) {
+    let identifier = document.createElement('div');
 
-      identifier.innerHTML = name.charAt(0);
-      identifier.style.zIndex = 2;
-      identifier.style.width = '8px';
-      identifier.style.height = '8px';
-      identifier.style.textAlign = 'center';
-      identifier.style.position = 'absolute';
-      identifier.style.fontSize = '0.5em';
-      identifier.style.background = '#ffb300';
-      identifier.style.borderRadius = '0.25em';
-      identifier.style.bottom = '-18px';
-      identifier.style.pointerEvents = 'none';
-      identifier.style.border = '0.1em solid black';
-      cell.appendChild(identifier);
-    }
+    identifier.innerHTML = name.charAt(0) + `<span style="font-size:0.25rem;">` + name.charAt(1) + `</span>`;
+    identifier.style.zIndex = 2;
+    identifier.style.width = '8px';
+    identifier.style.height = '8px';
+    identifier.style.textAlign = 'center';
+    identifier.style.position = 'absolute';
+    identifier.style.fontSize = '0.5rem';
+    identifier.style.background = getClanBack(cell.getElementsByTagName('small')[0].innerText);
+    identifier.style.color = getClanColor(cell.getElementsByTagName('small')[0].innerText);
+    identifier.style.borderRadius = '0.25em';
+    identifier.style.bottom = '-18px';
+    identifier.style.pointerEvents = 'none';
+    identifier.style.border = '0.1em solid black';
+    identifier.style.fontFamily = 'monospace';
+    cell.appendChild(identifier);
+  }
+}
+
+function getClanColor(clan) {
+  if (clansColor[clan]) {
+    return clansColor[clan];
+  } else {
+    return 'black';
+  }
+}
+
+function getClanBack(clan) {
+  if (clansBack[clan]) {
+    return clansBack[clan];
+  } else {
+    return '#ffffffa1';
   }
 }
 
