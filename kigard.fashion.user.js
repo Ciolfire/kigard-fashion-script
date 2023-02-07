@@ -4,7 +4,7 @@
 // @contributor Saneth
 // @contributor Menolly
 // @description Un script permettant la personnalisation des icones de personnage sur Kigard.fr.
-// @version 27
+// @version 27.1
 // @grant GM_addStyle
 // @match https://tournoi.kigard.fr/*
 // @exclude https://tournoi.kigard.fr/index.php?p=vue*&d=t
@@ -20,7 +20,7 @@ var zoom = 1;
 // ==     Pour le désactiver, mettre à zero la ligne après ce bloc   ==
 // == 1: afficher pour personnages sans icone 2: Affichage pour tous ==
 // ====================================================================
-var battleMode = 2;
+var battleMode = 1;
 // ============= Activer ou désactiver le mode nuit ===================
 // ==     Pour le désactiver, mettre à zero la ligne après ce bloc   ==
 // ==         Il existe plusieurs niveaux d'obscurité:               ==
