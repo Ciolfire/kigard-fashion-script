@@ -4,18 +4,12 @@
 // @contributor Saneth
 // @contributor Menolly
 // @description Un script permettant la personnalisation des icones de personnage sur Kigard.fr.
-// @version 27.1
+// @version 28
 // @grant GM_addStyle
 // @match https://tournoi.kigard.fr/*
 // @exclude https://tournoi.kigard.fr/index.php?p=vue*&d=t
 // ==/UserScript==
 
-// ============= Activer ou désactiver le zoom ========================
-// ==     Pour le désactiver, mettre à zero la ligne après ce bloc   ==
-// ==     Sinon, mettre une valeur supérieur à 1 (1.2, 1.5, 2,...    ==
-// ==      Exemple: "var zoom = 1.5;" ou "var zoom = 2;"             ==
-// ====================================================================
-var zoom = 1;
 // ============= Activer ou désactiver les pastilles ==================
 // ==     Pour le désactiver, mettre à zero la ligne après ce bloc   ==
 // == 1: afficher pour personnages sans icone 2: Affichage pour tous ==
@@ -116,17 +110,6 @@ if (typeof GM_addStyle == 'undefined') {
   };
 }
 
-if (zoom > 1) {
-  GM_addStyle(`
-  @media (min-width: 600px) {
-    div.vue { width: ${330 * zoom -5}px;height: ${330 * zoom -5}px;float: none; flex-shrink: 0; }
-    div.bloc-vue div.vue-wrap div.description_vue {position: relative;left: auto;bottom: auto;width: auto;flex-grow: 1;}
-    div.vue-wrap {display: flex;flex-direction: row;flex-wrap: wrap;justify-content: center;}
-    table.vue {transform: scale(${100 * zoom}%);transform-origin: top left;image-rendering: pixelated;}
-  }
-  `);
-}
-
 var charReq = new XMLHttpRequest();
 var horseReq = new XMLHttpRequest();
 var customList = [];
@@ -156,19 +139,19 @@ charReq.onload = function() {
   const urlParams = new URLSearchParams(queryString);
   const page = urlParams.get('p')
   if (document.getElementsByTagName("h3")[0].innerHTML.includes("Liste des personnages")) {
-    //console.log("list");
+    console.log("list");
     fashionList();
   } else if (page == "clan" && urlParams.get('g') == "membres") {
-    //console.log("propre clan");
+    console.log("propre clan");
     fashionOwnClan();
   } else if ((document.getElementsByTagName("h3")[1]) && document.getElementsByTagName("h3")[1].innerHTML.includes("Membres")) {
-    //console.log("clan");
+    console.log("clan");
     fashionClan();
   } else if (document.getElementById("page_profil_public")) {
-    //console.log("profile");
+    console.log("profile");
     fashionLinks();
   } else {
-    //console.log("default");
+    console.log("default");
     applyFashion();
   }
 };
@@ -204,6 +187,13 @@ function fashionLinks() {
 
 function applyFashion() {
   var vue = document.getElementsByTagName("tbody")[0];
+  let description = document.getElementsByClassName('description')[0].children[1];
+  //let currentLabel = description.getElementsByClassName('profil_popin')[0].innerText;
+  //let currentImg = description.getElementsByClassName('vue')[0];
+
+  if (description.getElementsByClassName('profil_popin').length > 0) {
+      fashionCharacter(description.getElementsByClassName('profil_popin')[0].innerText, description.getElementsByClassName('vue')[0]);
+  }
   if (vue === undefined) {
     return;
   }
@@ -238,7 +228,7 @@ function applyFashion() {
         let cellContent = cell.children[0];
         // If it's a character...
         if (cellContent.innerHTML.includes("images/vue/pj/")) {
-          fashionCharacter(cellContent);
+          fashionCell(cellContent);
         } else if (cellContent.innerHTML.includes("images/vue/monstre/17.gif")) {
           fashionHorse(cellContent);
         }
@@ -247,18 +237,16 @@ function applyFashion() {
   }
 }
 
-function fashionCharacter(cell) {
-  // we get its name and...
-  let name = cell.querySelector(".titre").innerText.trim();
+function fashionCharacter(name, img) {
+  //console.log("fashion character");
   // ... if it has a custom icon then...
   if (customList.includes(name)) {
     let customImg = `${name}.gif`;
     //... if he is mounted we add the horse path
-    if (cell.innerHTML.includes("cheval")) {
+    if (img.src.includes("cheval")) {
       customImg = `horse/${customImg}`;
     }
     customImg = `https://raw.githubusercontent.com/Ciolfire/kigard-fashion-script/main/${period}/${customImg}`;
-    let img = cell.firstElementChild;
     img.setAttribute("dataImage", img.src);
     img.src = customImg;
     img.onerror = (e) => {
@@ -268,6 +256,14 @@ function fashionCharacter(cell) {
       }
     }
   }
+}
+
+function fashionCell(cell) {
+  // we get its name and...
+  let name = cell.querySelector(".titre").innerText.trim();
+  let img = cell.firstElementChild;
+  // ... if it has a custom icon then...
+  fashionCharacter(name, img);
   if (battleMode == 2 || !customList.includes(name) && battleMode == 1) {
     let identifier = document.createElement('div');
 
