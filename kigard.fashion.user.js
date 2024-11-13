@@ -55,7 +55,7 @@ var clansBack = {
   "[SAI]": '#4D5A56C7',
   "[CDC]": '#ffb300c7',
   "[CER]": '#ffb300c7',
-  "[BIB]": '#ffb300c7',
+  "[BIB]": '#ffb300c7'
 }
 
 var clansColor = {
@@ -91,7 +91,7 @@ var clansColor = {
   "[SAI]": 'pink',
   "[CDC]": 'black',
   "[CER]": 'black',
-  "[BIB]": 'black',
+  "[BIB]": 'black'
 }
 
 
