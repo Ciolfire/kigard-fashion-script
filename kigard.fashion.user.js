@@ -4,10 +4,10 @@
 // @contributor Saneth
 // @contributor Menolly
 // @description Un script permettant la personnalisation des icones de personnage sur Kigard.fr.
-// @version 28
+// @version 29
 // @grant GM_addStyle
-// @match https://tournoi.kigard.fr/*
-// @exclude https://tournoi.kigard.fr/index.php?p=vue*&d=t
+// @match https://*.kigard.fr/*
+// @exclude https://*.kigard.fr/index.php?p=vue*&d=t
 // ==/UserScript==
 
 // ============= Activer ou désactiver les pastilles ==================
